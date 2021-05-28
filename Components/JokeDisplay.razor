@@ -1,0 +1,32 @@
+@inherits Fluxor.Blazor.Web.Components.FluxorComponent
+@using JokesApp.Store.Jokes
+@using JokesApp.Store.Jokes.Actions
+
+<div class="card">
+    <div class="card-header d-flex flex-row align-items-center">
+        <div class="flex-fill">Bad Jokes App</div>
+        <button class="btn btn-outline-primary btn-sm" @onclick="FetchNew">Fetch new joke</button>
+    </div>
+    <div class="card-body fw-bolder fw-bold fs-3">
+        @State.Value.CurrentJoke
+    </div>
+</div>
+
+@code
+{
+    [Inject]
+    private IState<JokesState> State { get; set; }
+
+    [Inject]
+    private IDispatcher Dispatcher { get; set; }
+
+    public void FetchNew()
+    {
+        Dispatcher.Dispatch(new FetchJoke());
+    }
+
+    protected override void OnParametersSet()
+    {
+        FetchNew();
+    }
+}
